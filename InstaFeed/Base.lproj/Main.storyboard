@@ -27,7 +27,7 @@
         <!--Explore-->
         <scene sceneID="OeD-mA-kPb">
             <objects>
-                <collectionViewController title="Explore" id="p4D-ye-3U5" sceneMemberID="viewController">
+                <collectionViewController title="Explore" id="p4D-ye-3U5" customClass="ExploreCollectionViewController" customModule="InstaFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="V3i-U2-Opt">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -39,24 +39,36 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="rOr-Ha-opW">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier=" " id="rOr-Ha-opW" customClass="ExplorePhotoCollectionViewCell" customModule="InstaFeed" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="200" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no_image" translatesAutoresizingMaskIntoConstraints="NO" id="h2q-eq-SWT">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="no_image" translatesAutoresizingMaskIntoConstraints="NO" id="h2q-eq-SWT">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" 💗Likes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xu3-pq-RvW">
+                                            <rect key="frame" x="0.0" y="164" width="200" height="28"/>
+                                            <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="20"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
+                                    <constraint firstItem="xu3-pq-RvW" firstAttribute="leading" secondItem="rOr-Ha-opW" secondAttribute="leading" id="7nK-bJ-80M"/>
+                                    <constraint firstAttribute="trailing" secondItem="xu3-pq-RvW" secondAttribute="trailing" id="K6w-Cz-QWp"/>
                                     <constraint firstAttribute="trailing" secondItem="h2q-eq-SWT" secondAttribute="trailing" id="UCX-9n-jKi"/>
                                     <constraint firstItem="h2q-eq-SWT" firstAttribute="leading" secondItem="rOr-Ha-opW" secondAttribute="leading" id="X5J-Rb-VLn"/>
                                     <constraint firstAttribute="bottom" secondItem="h2q-eq-SWT" secondAttribute="bottom" id="bxc-1a-PDO"/>
                                     <constraint firstItem="h2q-eq-SWT" firstAttribute="top" secondItem="rOr-Ha-opW" secondAttribute="top" id="dUb-It-KC9"/>
+                                    <constraint firstAttribute="bottom" secondItem="xu3-pq-RvW" secondAttribute="bottom" constant="8" id="pb0-Ss-Ooz"/>
+                                    <constraint firstAttribute="bottom" secondItem="xu3-pq-RvW" secondAttribute="bottom" constant="8" id="tsQ-rY-sZd"/>
+                                    <constraint firstItem="xu3-pq-RvW" firstAttribute="leading" secondItem="rOr-Ha-opW" secondAttribute="leading" id="wps-qK-KEY"/>
+                                    <constraint firstAttribute="trailing" secondItem="xu3-pq-RvW" secondAttribute="trailing" id="zbN-LD-REi"/>
                                 </constraints>
                             </collectionViewCell>
                         </cells>
@@ -68,6 +80,11 @@
                     <navigationItem key="navigationItem" title="Explore" id="TwY-Tc-Wm6"/>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NFe-MI-Juq" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchBar contentMode="redraw" id="Mx8-Mc-gzK">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <textInputTraits key="textInputTraits"/>
+                </searchBar>
             </objects>
             <point key="canvasLocation" x="1661" y="99"/>
         </scene>
