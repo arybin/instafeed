@@ -15,6 +15,8 @@ class ExploreCollectionViewController: UICollectionViewController {
     
     private var accessToken: String!
     private var photoDictionaries = [AnyObject]()
+    private var data:[[String: String!]] = []
+    
     private let ACCESS_TOKEN_STR: String = "accessToken"
     private let leftAndRightPaddings: CGFloat = 32.0
     private let numberOfItemsPerRow: CGFloat = 3.0
@@ -26,6 +28,10 @@ class ExploreCollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //configure search bar, by subscribing to its events
+        self.navigationItem.titleView = searchBar
+        self.searchBar.delegate = self
+        
         //set the color for the back ground on load
         
         self.collectionView?.backgroundColor = UIColor.whiteColor()
@@ -64,12 +70,9 @@ class ExploreCollectionViewController: UICollectionViewController {
                     userDefaults.synchronize()
                     
                     self.fetchPhotos()
-                    
                 }
             }
-            
         }
-        
     }
     //MARK: Helper Methods
     //https://api.instagram.com/v1/tags/{tag-name}/media/recent?access_token=ACCESS-TOKEN
@@ -104,14 +107,52 @@ class ExploreCollectionViewController: UICollectionViewController {
                     let responseDictionary = try NSJSONSerialization.JSONObjectWithData(data! , options: NSJSONReadingOptions.AllowFragments)
                     
                     self.photoDictionaries = responseDictionary.valueForKey("data") as! [AnyObject]
-                    print(self.photoDictionaries.count)
+                    
+                    for result in self.photoDictionaries {
+                        let likes = result.valueForKeyPath("likes.count")!.stringValue
+                        let comment = result.valueForKeyPath("comments.count")!.stringValue
+                        let obj = ["comments": comment, "likes": likes]
+                        self.data.append(obj)
+                        
+                    }
+                    //this feature is not implemented
+                    //self.orderByLikes()
                     
                 } catch let error{
                     print(error)
                 }
             }
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.collectionView?.reloadData()
+            })
+
         }
         task.resume()
+    }
+    
+    func orderedBy(key: String) {
+        //sort by likes or comments, needs to be in background threat
+        let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+        
+        dispatch_async(dispatch_get_global_queue(priority, 0)) { () -> Void in
+            //sort in the background
+            self.data.sortInPlace {
+                item1, item2 in
+                let value1 = Double(item1[key]!)
+                let value2 = Double(item2[key]!)
+                
+                return value1 > value2
+            }
+            
+            //foreground thread
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                 self.collectionView?.reloadData()
+            })
+        }
+    }
+    
+    func orderByLikes() {
+        orderedBy("likes")
     }
     
     //MARK: UICollectionViewDataSource
@@ -123,7 +164,6 @@ class ExploreCollectionViewController: UICollectionViewController {
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //return the number of items
-        print(self.photoDictionaries.count)
         return self.photoDictionaries.count
     }
     
@@ -133,8 +173,47 @@ class ExploreCollectionViewController: UICollectionViewController {
         // Configure the cell
         //cell.imageView.image = UIImage(named: "no_image")
         cell.photo = self.photoDictionaries[indexPath.item]
-        
-        
         return cell
+    }
+    
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        //display image taking most of the screen when a user clicks on an image
+        let photo = self.photoDictionaries[indexPath.row] as! NSDictionary
+        let viewController = DetailPhotoViewController()
+        
+        //to make a nice animation need to subscribe to the transiction delegate
+        viewController.modalPresentationStyle = UIModalPresentationStyle.Custom
+        viewController.transitioningDelegate = self
+        viewController.photo = photo
+        //now show the view
+        self.presentViewController(viewController, animated: true, completion: nil)
+    }
+}
+
+//MARK: - UISearchBarDelegate
+
+extension ExploreCollectionViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        if !searchBar.text!.isEmpty {
+            //someoneTypedSomething in there
+            searchBar.resignFirstResponder()
+            fetchPhotos()
+        }
+    }
+}
+
+//MARK: - CollectionViewTransitionDelegate
+
+extension ExploreCollectionViewController: UIViewControllerTransitioningDelegate {
+    
+    //responsible for showing the view
+    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return PresentDetailTransition()
+    }
+    
+    
+    //responsible for dismissing the view
+    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return DismissDetailTransition()
     }
 }

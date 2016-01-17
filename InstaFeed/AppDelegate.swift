@@ -15,7 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     /*
     CLIENT INFO
     CLIENT ID	50e7b462e038458cb31916817988abae
-    CLIENT SECRET	5c779ebeefe441419a632e9042d25bb4
     */
 
     var window: UIWindow?

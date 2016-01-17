@@ -15,7 +15,10 @@ class ExplorePhotoCollectionViewCell: UICollectionViewCell {
     
     var photo: AnyObject! {
         didSet{
-            
+            InstagramData.imageForPhoto(photo, size: ImageSizes.THUMBNAIL.rawValue) { (image, likeCount) -> Void in
+                self.imageView.image = image
+                self.likesCount.text = "💗 " + String(likeCount) + " likes"
+            }
         }
     }
     
