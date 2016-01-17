@@ -7,9 +7,16 @@
 //
 
 import UIKit
+import SimpleAuth
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    /*
+    CLIENT INFO
+    CLIENT ID	50e7b462e038458cb31916817988abae
+    CLIENT SECRET	5c779ebeefe441419a632e9042d25bb4
+    */
 
     var window: UIWindow?
 
@@ -19,6 +26,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBar.appearance().tintColor = UIColor.whiteColor()
         UINavigationBar.appearance().titleTextAttributes =
             [NSForegroundColorAttributeName: UIColor.whiteColor()]
+        
+        let authDict = [
+            "client_id": "50e7b462e038458cb31916817988abae",
+            SimpleAuthRedirectURIKey: "instafeed://auth/instagram"
+            
+        ]
+        SimpleAuth.configuration()["instagram"] = authDict
+        
         
         
         return true

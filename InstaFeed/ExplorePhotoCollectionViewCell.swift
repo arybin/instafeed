@@ -11,5 +11,12 @@ import UIKit
 class ExplorePhotoCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var likesCount: UILabel!
+    
+    var photo: AnyObject! {
+        didSet{
+            
+        }
+    }
     
 }
