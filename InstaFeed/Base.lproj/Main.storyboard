@@ -239,6 +239,11 @@
                                         <constraint firstItem="ZMs-qa-noE" firstAttribute="leading" secondItem="9Pp-CH-0Qe" secondAttribute="leading" constant="8" id="llm-Nc-ejo"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="info" destination="evc-Bb-u1E" id="A3R-O4-oL7"/>
+                                    <outlet property="likes" destination="edy-nT-xfT" id="lou-hx-gtn"/>
+                                    <outlet property="photo" destination="lcn-yy-xgp" id="Xnf-mI-SIJ"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CommentCell" id="lSf-d8-Ica" customClass="CommentTableViewCell" customModule="InstaFeed" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="672" width="600" height="44"/>
@@ -261,6 +266,9 @@
                                         <constraint firstAttribute="bottom" secondItem="QFS-mJ-7Pf" secondAttribute="bottom" id="kEQ-Yw-elW"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="comments" destination="QFS-mJ-7Pf" id="JeH-DO-gaA"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>

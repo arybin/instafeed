@@ -84,18 +84,26 @@ strip_invalid_archs() {
 
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
+  install_framework "Pods/AFNetworking.framework"
+  install_framework "Pods/Alamofire.framework"
   install_framework "Pods/CMDQueryStringSerialization.framework"
+  install_framework "Pods/DateTools.framework"
   install_framework "Pods/ISO8601.framework"
   install_framework "Pods/ReactiveCocoa.framework"
   install_framework "Pods/Result.framework"
   install_framework "Pods/SAMCache.framework"
   install_framework "Pods/SimpleAuth.framework"
+  install_framework "Pods/SwiftyJSON.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
+  install_framework "Pods/AFNetworking.framework"
+  install_framework "Pods/Alamofire.framework"
   install_framework "Pods/CMDQueryStringSerialization.framework"
+  install_framework "Pods/DateTools.framework"
   install_framework "Pods/ISO8601.framework"
   install_framework "Pods/ReactiveCocoa.framework"
   install_framework "Pods/Result.framework"
   install_framework "Pods/SAMCache.framework"
   install_framework "Pods/SimpleAuth.framework"
+  install_framework "Pods/SwiftyJSON.framework"
 fi

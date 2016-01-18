@@ -13,6 +13,7 @@
 		C56DCE7B1C4B405D00119AC7 /* ImageSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56DCE7A1C4B405D00119AC7 /* ImageSizes.swift */; };
 		C56DCE7D1C4B452D00119AC7 /* PresentDetailTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56DCE7C1C4B452D00119AC7 /* PresentDetailTransition.swift */; };
 		C56DCE7F1C4B45A400119AC7 /* DismissDetailTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56DCE7E1C4B45A400119AC7 /* DismissDetailTransition.swift */; };
+		C57881CF1C4D168B00F68441 /* InstagramAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57881CE1C4D168B00F68441 /* InstagramAPI.swift */; };
 		C57C22311C455F3200CC12B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57C22301C455F3200CC12B9 /* AppDelegate.swift */; };
 		C57C22361C455F3300CC12B9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C57C22341C455F3300CC12B9 /* Main.storyboard */; };
 		C57C22381C455F3300CC12B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C57C22371C455F3300CC12B9 /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 		C56DCE7A1C4B405D00119AC7 /* ImageSizes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSizes.swift; sourceTree = "<group>"; };
 		C56DCE7C1C4B452D00119AC7 /* PresentDetailTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentDetailTransition.swift; sourceTree = "<group>"; };
 		C56DCE7E1C4B45A400119AC7 /* DismissDetailTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissDetailTransition.swift; sourceTree = "<group>"; };
+		C57881CE1C4D168B00F68441 /* InstagramAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstagramAPI.swift; sourceTree = "<group>"; };
 		C57C222D1C455F3200CC12B9 /* InstaFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstaFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C57C22301C455F3200CC12B9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C57C22351C455F3300CC12B9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -49,6 +51,7 @@
 		C5D12E891C482E9000F4B00A /* PhotoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoTableViewCell.swift; sourceTree = "<group>"; };
 		C5D12E8B1C482ECD00F4B00A /* CommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		C5D12E8F1C483DC800F4B00A /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		C5F83CE61C4D74300055470E /* Bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Bridge.h; sourceTree = "<group>"; };
 		CDAF500668B5B728627FD284 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -93,8 +96,28 @@
 			isa = PBXGroup;
 			children = (
 				C56DCE7A1C4B405D00119AC7 /* ImageSizes.swift */,
+				C57881CE1C4D168B00F68441 /* InstagramAPI.swift */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		C57881CC1C4D162800F68441 /* ExploreController */ = {
+			isa = PBXGroup;
+			children = (
+				C57C22461C46CDC100CC12B9 /* ExploreCollectionViewController.swift */,
+				C56DCE771C4B3CE400119AC7 /* DetailPhotoViewController.swift */,
+				C56DCE7C1C4B452D00119AC7 /* PresentDetailTransition.swift */,
+				C56DCE7E1C4B45A400119AC7 /* DismissDetailTransition.swift */,
+			);
+			name = ExploreController;
+			sourceTree = "<group>";
+		};
+		C57881CD1C4D164400F68441 /* FeedController */ = {
+			isa = PBXGroup;
+			children = (
+				C5D12E811C47E78800F4B00A /* FeedTableViewController.swift */,
+			);
+			name = FeedController;
 			sourceTree = "<group>";
 		};
 		C57C22241C455F3200CC12B9 = {
@@ -127,6 +150,7 @@
 				C57C22371C455F3300CC12B9 /* Assets.xcassets */,
 				C57C22391C455F3300CC12B9 /* LaunchScreen.storyboard */,
 				C57C223C1C455F3300CC12B9 /* Info.plist */,
+				C5F83CE61C4D74300055470E /* Bridge.h */,
 			);
 			path = InstaFeed;
 			sourceTree = "<group>";
@@ -147,11 +171,8 @@
 		C5D12E8E1C4835C900F4B00A /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				C57C22461C46CDC100CC12B9 /* ExploreCollectionViewController.swift */,
-				C5D12E811C47E78800F4B00A /* FeedTableViewController.swift */,
-				C56DCE771C4B3CE400119AC7 /* DetailPhotoViewController.swift */,
-				C56DCE7C1C4B452D00119AC7 /* PresentDetailTransition.swift */,
-				C56DCE7E1C4B45A400119AC7 /* DismissDetailTransition.swift */,
+				C57881CC1C4D162800F68441 /* ExploreController */,
+				C57881CD1C4D164400F68441 /* FeedController */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -284,6 +305,7 @@
 				C57C22491C46CE0100CC12B9 /* ExplorePhotoCollectionViewCell.swift in Sources */,
 				C5D12E871C4828DE00F4B00A /* HeaderTableViewCell.swift in Sources */,
 				C5D12E8A1C482E9000F4B00A /* PhotoTableViewCell.swift in Sources */,
+				C57881CF1C4D168B00F68441 /* InstagramAPI.swift in Sources */,
 				C57C22471C46CDC100CC12B9 /* ExploreCollectionViewController.swift in Sources */,
 				C5D12E8C1C482ECD00F4B00A /* CommentTableViewCell.swift in Sources */,
 				C56DCE7D1C4B452D00119AC7 /* PresentDetailTransition.swift in Sources */,
@@ -411,6 +433,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = rybin.InstaFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = InstaFeed/Bridge.h;
 			};
 			name = Debug;
 		};
@@ -426,6 +449,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = rybin.InstaFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = InstaFeed/Bridge.h;
 			};
 			name = Release;
 		};

@@ -9,6 +9,25 @@
 import UIKit
 
 class CommentTableViewCell: UITableViewCell {
+    @IBOutlet weak var comments: UILabel!
+    
+    var comment:InstagramAPI.Comments? {
+        
+        didSet{
+            guard let setComment = comment else {
+                return
+            }
+            let line = setComment.fromUserName + ": " + setComment.commentText
+            let attrString = NSMutableAttributedString(string: line)
+            let range = (line as NSString).rangeOfString(setComment.fromUserName)
+            attrString.addAttribute(NSForegroundColorAttributeName,
+                value: UIColor.blueColor(),
+                range: range)
+            
+            comments.attributedText = attrString
+            
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
