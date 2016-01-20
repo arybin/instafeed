@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FeedTableViewController: UITableViewController {
+class FeedTableViewController: UITableViewController, HeaderTableViewCellDelegate {
     
     @IBOutlet weak var userImage: UIImageView!
     @IBOutlet weak var profileView  : UIView!
@@ -17,28 +17,95 @@ class FeedTableViewController: UITableViewController {
     @IBOutlet weak var userFollowing: UILabel!
     
     var medias:[InstagramAPI.PopularMedia] = []
+    var userId = "1"
+    var profilePicture = ""
+    var flag = false //indicate if the header view is shown
     
     struct Storyboard {
         static let feedPhotoCell = "PhotoCell"
         static let commentCell = "CommentCell"
+        static let HeaderCellFeedTable = "HeaderCellFeedTable"
     }
     
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    //refresh data
+    
+    func refresh() {
         
-        tableView.estimatedRowHeight = 400
-        tableView.rowHeight = UITableViewAutomaticDimension
-        InstagramAPI().fetchMediaData{ (medias: [InstagramAPI.PopularMedia]) -> () in
-            self.medias = medias
-            self.tableView.reloadData()
+        if flag  == true {
+            updateData()
+        } else {
+            //updating your data here
+            InstagramAPI().fetchMediaData{ (medias: [InstagramAPI.PopularMedia]) -> () in
+                self.medias = medias
+                self.tableView.reloadData()
+                self.refreshControl?.endRefreshing()
+            }
         }
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        toggleHeader()
+        //register xib
+        self.tableView.registerNib(
+            UINib(nibName: "HeaderTableViewCell", bundle: nil),
+            forCellReuseIdentifier: Storyboard.HeaderCellFeedTable
+        )
+        
+        tableView.estimatedRowHeight = 450
+        tableView.rowHeight = UITableViewAutomaticDimension
+        //round the image
+        self.userImage.layer.borderWidth = 1
+        self.userImage.layer.masksToBounds = false
+        self.userImage.layer.borderColor = UIColor.blackColor().CGColor
+        self.userImage.layer.cornerRadius = self.userImage.frame.height / 2
+        self.userImage.clipsToBounds = true
+        
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl?.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        
+        self.tableView!.addSubview(refreshControl!)
+        
+        refresh()
+       
     }
+    
+    //Update user profile page section
+    func updateData() {
+        //going to update in the background
+        dispatch_async(dispatch_get_global_queue(Int(QOS_CLASS_USER_INITIATED.rawValue), 0)) { () -> Void in
+            //need method to update user data
+            InstagramAPI().fetchUserData(self.userId, callback: { userProfile in
+                
+                let font = UIFont(name: "AvenirNext-Regular", size: 14)
+                
+                self.userFollowers.text = "Followers; " + String(userProfile.followers)
+                self.userFollowers.font = font
+                
+                self.userFollowing.text = "Following: " + String(userProfile.follows)
+                self.userFollowing.font = font
+                
+                self.userPosts.text = "Posts: " + String(userProfile.posts)
+                self.userPosts.font = font
+                
+                if let url = NSURL(string: self.profilePicture),
+                    data = NSData(contentsOfURL: url),
+                    photo = UIImage(data: data) {
+                        self.userImage.image = photo
+                } else {
+                    self.userImage.image = UIImage(named: "no_image")
+                }
+                //update the profile page
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    InstagramAPI().fetchUsersRecentMediaPosts(self.userId, callback: { (medias: [InstagramAPI.PopularMedia]) -> Void in
+                        self.medias = medias
+                        self.tableView.reloadData()
+                    })
+                })
+            })
+        }
+    }
+
 
     // MARK: - Table view data source
 
@@ -54,7 +121,8 @@ class FeedTableViewController: UITableViewController {
 
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.feedPhotoCell, forIndexPath: indexPath)
+        //cell
+        let _ = tableView.dequeueReusableCellWithIdentifier(Storyboard.feedPhotoCell, forIndexPath: indexPath)
         
         //first cell is for media
         if(indexPath.row == 0) {
@@ -77,59 +145,48 @@ class FeedTableViewController: UITableViewController {
         return 60.0 //just manually for now to make it look nice
     }
     
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let cell = tableView.dequeueReusableCellWithIdentifier(Storyboard.HeaderCellFeedTable) as! HeaderTableViewCell
+        
+        var frame = cell.frame
+        frame.size.height = 100
+        cell.frame = frame
+//        cell.backgroundColor = UIColor.grayColor()
+        cell.header = medias[section]
+        cell.delegate = self
+        
+        return cell
+        
+    }
+    
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 10.0
     }
     
     override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRectMake(0,0, tableView.frame.size.width, 40))
-        footerView.backgroundColor = UIColor.redColor()
+        footerView.backgroundColor = UIColor.whiteColor()
         return footerView
     }
 
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    //Did tap
+    
+    func cellTapped(cell: HeaderTableViewCell) {
+        let tappedUser = cell.header
+        let id = tappedUser?.userId
+        let storyBoard = UIStoryboard(name:  "Main", bundle: nil)
+        let controller = storyBoard.instantiateViewControllerWithIdentifier("Feed") as! FeedTableViewController
+        controller.flag = true
+        controller.userId = id!
+        controller.profilePicture = (tappedUser?.profilePicture)!
+        controller.title = tappedUser?.userName
+        self.navigationController?.pushViewController(controller, animated: true)
+        
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+    
+    func toggleHeader() {
+        tableView.tableHeaderView = flag ? self.profileView : nil
+        
     }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

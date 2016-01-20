@@ -57,6 +57,11 @@
                     <constraint firstItem="Dez-RI-2uY" firstAttribute="leading" secondItem="Hzb-Kz-IY5" secondAttribute="trailing" constant="8" id="oh1-yo-eKb"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="headPic" destination="Hzb-Kz-IY5" id="a5v-eH-4h1"/>
+                <outlet property="headPostTime" destination="gbE-OV-Dne" id="3Qh-BP-1lE"/>
+                <outlet property="headUserName" destination="Dez-RI-2uY" id="Vwz-jZ-GId"/>
+            </connections>
         </tableViewCell>
     </objects>
 </document>
